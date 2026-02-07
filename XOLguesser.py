@@ -7,6 +7,7 @@ import time
 # Developed by AEROforge
 # Supervised and Founded by AEROxol
 # Programming and Debugging by AEROxol
+# https://github.com/AEROmicro/XOLguesser
 
 # Licensed under GNU General Public License v3.0 (GPLv3)
 # Anyone redistributing or modifying this code must retain this notice.
@@ -50,9 +51,10 @@ import time
 #Verison 3.2: Added partial state capitals to guess the state game mode
 #Verison 3.3: Finished guess the state based on the capital mode
 #Verison 3.4: Added new menu
+#Verison 3.5: Finished guess the state based on the capital mode
 
 # ASCII Art
-art = ("|---------------------------------------------------------------------------------------------------------|\n|                                                                                                         |\n|    /$$   /$$  /$$$$$$  /$$                                         Desgined and Programmed by AEROxol   |\n|   | $$  / $$ /$$__  $$| $$                                                                              |\n|   |  $$/ $$/| $$  \ $$| $$        /$$$$$$  /$$   /$$  /$$$$$$   /$$$$$$$ /$$$$$$$  /$$$$$$   /$$$$$$    |\n|    \  $$$$/ | $$  | $$| $$       /$$__  $$| $$  | $$ /$$__  $$ /$$_____//$$_____/ /$$__  $$ /$$__  $$   |\n|     >$$  $$ | $$  | $$| $$      | $$  \ $$| $$  | $$| $$$$$$$$|  $$$$$$|  $$$$$$ | $$$$$$$$| $$  \__/   |\n|    /$$/\  $$| $$  | $$| $$      | $$  | $$| $$  | $$| $$_____/ \____  $$\____  $$| $$_____/| $$         |\n|   | $$  \ $$|  $$$$$$/| $$$$$$$$|  $$$$$$$|  $$$$$$/|  $$$$$$$ /$$$$$$$//$$$$$$$/|  $$$$$$$| $$         |\n|   |__/  |__/ \______/ |________/ \____  $$ \______/  \_______/|_______/|_______/  \_______/|__/         |\n|                                  /$$  \ $$                                                              |\n|                                 |  $$$$$$/                                                              |\n|                                  \______/                                                 Version 3.4   |\n|                                                                                                         |\n|---------------------------------------------------------------------------------------------------------|")
+art = ("|---------------------------------------------------------------------------------------------------------|\n|                                                                                                         |\n|    /$$   /$$  /$$$$$$  /$$                                         Desgined and Programmed by AEROxol   |\n|   | $$  / $$ /$$__  $$| $$                                                                              |\n|   |  $$/ $$/| $$  \ $$| $$        /$$$$$$  /$$   /$$  /$$$$$$   /$$$$$$$ /$$$$$$$  /$$$$$$   /$$$$$$    |\n|    \  $$$$/ | $$  | $$| $$       /$$__  $$| $$  | $$ /$$__  $$ /$$_____//$$_____/ /$$__  $$ /$$__  $$   |\n|     >$$  $$ | $$  | $$| $$      | $$  \ $$| $$  | $$| $$$$$$$$|  $$$$$$|  $$$$$$ | $$$$$$$$| $$  \__/   |\n|    /$$/\  $$| $$  | $$| $$      | $$  | $$| $$  | $$| $$_____/ \____  $$\____  $$| $$_____/| $$         |\n|   | $$  \ $$|  $$$$$$/| $$$$$$$$|  $$$$$$$|  $$$$$$/|  $$$$$$$ /$$$$$$$//$$$$$$$/|  $$$$$$$| $$         |\n|   |__/  |__/ \______/ |________/ \____  $$ \______/  \_______/|_______/|_______/  \_______/|__/         |\n|                                  /$$  \ $$                                                              |\n|                                 |  $$$$$$/                                                              |\n|                                  \______/                                                 Version 2.8   |\n|                                                                                                         |\n|---------------------------------------------------------------------------------------------------------|")
 
 
 print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
@@ -660,7 +662,16 @@ def play_full_game():
     random.shuffle(hints)
     hint_index = 0
 
-    print("Guess the name of the country/state/province/territory:")
+    if mode == "1":
+            print("Guess the name of the country/territory:")
+    if mode == "2":
+            print("Guess the name of the country")
+    if mode == "3":
+            print("Guess the name of the territory:")
+    if mode == "4":
+            print("Guess the name of the state")
+    if mode == "5":
+            print("Guess the name of the providence")
 
     for attempt in range(1, 6):
         guess_input = input(f"Attempt {attempt}/5: ")
