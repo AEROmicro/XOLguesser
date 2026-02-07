@@ -62,7 +62,7 @@ Works on:
 Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/XOLguesser.git
+git clone https://github.com/AEROmicro/XOLguesser.git
 cd XOLguesser
 ```
 
