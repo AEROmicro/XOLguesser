@@ -60,10 +60,11 @@ import time
 #Version 3.6: Fixed error where 60s speedrun would fail
 #Version 3.7: Added/completed/bug tested new guess every country game mode
 #Version 3.8: Fixed bug where 60s speedrun game mode would not play
+#Version 3.9: Laid framework for 2 new game modes; bug fixes
 
 # ASCII Art
 
-art = ("|---------------------------------------------------------------------------------------------------------|\n|                                                                                                         |\n|    /$$   /$$  /$$$$$$  /$$                                         Desgined and Programmed by AEROxol   |\n|   | $$  / $$ /$$__  $$| $$                                                                              |\n|   |  $$/ $$/| $$  \ $$| $$        /$$$$$$  /$$   /$$  /$$$$$$   /$$$$$$$ /$$$$$$$  /$$$$$$   /$$$$$$    |\n|    \  $$$$/ | $$  | $$| $$       /$$__  $$| $$  | $$ /$$__  $$ /$$_____//$$_____/ /$$__  $$ /$$__  $$   |\n|     >$$  $$ | $$  | $$| $$      | $$  \ $$| $$  | $$| $$$$$$$$|  $$$$$$|  $$$$$$ | $$$$$$$$| $$  \__/   |\n|    /$$/\  $$| $$  | $$| $$      | $$  | $$| $$  | $$| $$_____/ \____  $$\____  $$| $$_____/| $$         |\n|   | $$  \ $$|  $$$$$$/| $$$$$$$$|  $$$$$$$|  $$$$$$/|  $$$$$$$ /$$$$$$$//$$$$$$$/|  $$$$$$$| $$         |\n|   |__/  |__/ \______/ |________/ \____  $$ \______/  \_______/|_______/|_______/  \_______/|__/         |\n|                                  /$$  \ $$                                                              |\n|                                 |  $$$$$$/                                                              |\n|                                  \______/                                                 Version 3.8   |\n|                                                                                                         |\n|---------------------------------------------------------------------------------------------------------|")
+art = ("|---------------------------------------------------------------------------------------------------------|\n|                                                                                                         |\n|    /$$   /$$  /$$$$$$  /$$                                         Desgined and Programmed by AEROxol   |\n|   | $$  / $$ /$$__  $$| $$                                                                              |\n|   |  $$/ $$/| $$  \ $$| $$        /$$$$$$  /$$   /$$  /$$$$$$   /$$$$$$$ /$$$$$$$  /$$$$$$   /$$$$$$    |\n|    \  $$$$/ | $$  | $$| $$       /$$__  $$| $$  | $$ /$$__  $$ /$$_____//$$_____/ /$$__  $$ /$$__  $$   |\n|     >$$  $$ | $$  | $$| $$      | $$  \ $$| $$  | $$| $$$$$$$$|  $$$$$$|  $$$$$$ | $$$$$$$$| $$  \__/   |\n|    /$$/\  $$| $$  | $$| $$      | $$  | $$| $$  | $$| $$_____/ \____  $$\____  $$| $$_____/| $$         |\n|   | $$  \ $$|  $$$$$$/| $$$$$$$$|  $$$$$$$|  $$$$$$/|  $$$$$$$ /$$$$$$$//$$$$$$$/|  $$$$$$$| $$         |\n|   |__/  |__/ \______/ |________/ \____  $$ \______/  \_______/|_______/|_______/  \_______/|__/         |\n|                                  /$$  \ $$                                                              |\n|                                 |  $$$$$$/                                                              |\n|                                  \______/                                                 Version 3.9   |\n|                                                                                                         |\n|---------------------------------------------------------------------------------------------------------|")
 
 print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 print("Starting XOLguesser...\n")
@@ -478,6 +479,14 @@ TERRITORIES = [
     {"name": "Greenland", "short": "GL", "country": "Denmark", "continent": "North America", "region": "North America", "population": 0.056, "aliases": ["Greenland"], "territory": True},
 
 ]
+
+UNRECOGNIZED_TERRITORIES = [
+    {"name": "Western Sahara", "short": "Western Sahara", "continent": "Africa", "region": "North Africa", "population": 0.6, "aliases": [], "unreconized": True},
+    {"name": "Kosovo", "short": "Kosovo", "continent": "Europe", "region": "Eastern Europe", "population": 1.8, "aliases": [], "unreconized": True},
+    {"name": "Northern Cyprus", "short": "Northern Cyprus", "continent": "Europe", "region": "Cyprus", "population": 0.3, "aliases": [], "unreconized": True},
+    {"name": "Abkhazia", "short": "Abkhazia", "continent": "Asia", "region": "South Caucasus", "population": 0.2, "aliases": [], "unreconized": True},
+    {"name": "South Ossetia", "short": "South Ossetia", "continent": "Asia", "region": "South Caucasus", "population": 0.0, "aliases": [], "unreconized": True},
+]
 # ----------------- Utility functions -----------------
 
 def normalize(s):
@@ -637,6 +646,14 @@ def hint_bank(entity):
             hints.append(f"Located in {region} on {continent}.")
             hints.append(f"The country has a population of {entity['population']}.")
             hints.append(f"Its name has {len(entity['capital'])} letters.")
+    # Unrecognized territory (New check)
+    elif entity.get("unrecognized", False):
+        region = entity.get("region", "Unknown")
+        population = entity.get("population", "unknown")
+        hints.append("This is an unrecognized or disputed territory.")
+        hints.append(f"Located in the region: {region}.")
+        hints.append(f"Population: {population} million.")
+        hints.append("Its status is disputed or not universally recognized.")
 
     # General info for countries
     else:
@@ -1089,6 +1106,8 @@ def show_guessed_list(guessed):
         print("\n")
 
 def guess_all_countries():
+    stats["played"] += 1
+    stats["wins"] += 1
     total_countries = len(COUNTRIES)
     guessed = set()
     start_time = time.time()
@@ -1162,6 +1181,251 @@ def guess_all_countries():
 
     print(f"Your rank: {rank}")
 
+#----------Guess all states------------------
+def find_states_by_guess(guess):
+    guess_norm = normalize(guess)
+    for state in US_STATES:
+        names_to_check = [
+            normalize(state["name"]),
+            normalize(state["short"]),
+        ] + [normalize(alias) for alias in state.get("aliases", [])]
+        if guess_norm in names_to_check:
+            return state
+    return None
+
+def show_guessed_liststates(guessed):
+    if not guessed:
+        print("You haven't guessed any countries yet.")
+        return
+    print("\nYour guessed countries:")
+    for country in guessed:
+        print(country)
+
+def guess_all_states():
+    total_countries = len(US_STATES)
+    guessed = set()
+    start_time = time.time()
+
+    print("Guess all the states in the United States!")
+    print("Type 'quit' to give up at any time.")
+    print("Type 'list' to see your guessed states.")
+    print("Let's go!")
+
+    while len(guessed) < total_countries:
+        remaining = total_countries - len(guessed)
+        guess_input = input(f"Guess a state ({remaining} left) or 'list' or 'quit': ").strip()
+
+        # Handle commands
+        if guess_input.lower() == "quit":
+            confirm = input("Are you sure you want to give up? (y/n): ").lower()
+            if confirm == "y":
+                break
+            else:
+                continue
+        if guess_input.lower() == "list":
+            show_guessed_list(guessed)
+            continue
+
+        # Check for guess
+        match_country = find_states_by_guess(guess_input)
+
+        # If no direct match, suggest with spellcheck
+        if not match_country:
+            options = [normalize(c["name"]) for c in US_STATES]
+            suggestion = spellcheck(normalize(guess_input), options, threshold=0.85)
+            if suggestion:
+                confirm = input(f"Did you mean {suggestion}? (y/n): ").lower()
+                if confirm == "y":
+                    match_country = next((c for c in US_STATES if normalize(c["name"]) == suggestion), None)
+                else:
+                    continue
+
+        if match_country:
+            if match_country["name"] not in guessed:
+                guessed.add(match_country["name"])
+                print(f"Correct! {match_country['name']} added.")
+            else:
+                print("You already guessed that.")
+        else:
+            print("Incorrect guess.")
+
+        if len(guessed) == total_countries:
+            print("Congratulations! You guessed all the States!")
+
+    # Time taken
+    end_time = time.time()
+    duration = end_time - start_time
+
+    guessed_count = len(guessed)
+    print(f"\nYou guessed {guessed_count} out of {total_countries} States.")
+    print(f"Time taken: {int(duration // 60)} minutes and {int(duration % 60)} seconds.")
+
+    # Rank system
+    percentage = guessed_count / total_countries
+    if percentage >= 0.9:
+        rank = "Legendary Globetrotting Master"
+    elif percentage >= 0.75:
+        rank = "World Explorer"
+    elif percentage >= 0.5:
+        rank = "Seasoned Traveler"
+    elif percentage >= 0.25:
+        rank = "Casual Wanderer"
+    else:
+        rank = "Beginner"
+
+    print(f"Your rank: {rank}")
+    stats["played"] += 1
+    stats["wins"] += 1
+
+#----------Guess all providences------------------
+def find_canada_by_guess(guess):
+    guess_norm = normalize(guess)
+    for providence in CAN_PROVINCES:
+        names_to_check = [
+            normalize(providence["name"]),
+            normalize(providence["short"]),
+        ] + [normalize(alias) for alias in providence.get("aliases", [])]
+        if guess_norm in names_to_check:
+            return providence
+    return None
+
+def show_guessed_listcanada(guessed):
+    if not guessed:
+        print("You haven't guessed any providence yet.")
+        return
+    print("\nYour guessed providences:")
+    for country in guessed:
+        print(country)
+
+def guess_all_canada():
+    total_countries = len(CAN_PROVINCES)
+    guessed = set()
+    start_time = time.time()
+
+    print("Guess all the Provinces in Canada!")
+    print("Type 'quit' to give up at any time.")
+    print("Type 'list' to see your guessed providences.")
+    print("Let's go!")
+
+    while len(guessed) < total_countries:
+        remaining = total_countries - len(guessed)
+        guess_input = input(f"Guess a providence ({remaining} left) or 'list' or 'quit': ").strip()
+
+        # Handle commands
+        if guess_input.lower() == "quit":
+            confirm = input("Are you sure you want to give up? (y/n): ").lower()
+            if confirm == "y":
+                break
+            else:
+                continue
+        if guess_input.lower() == "list":
+            show_guessed_list(guessed)
+            continue
+
+        # Check for guess
+        match_country = find_canada_by_guess(guess_input)
+
+        # If no direct match, suggest with spellcheck
+        if not match_country:
+            options = [normalize(c["name"]) for c in CAN_PROVINCES]
+            suggestion = spellcheck(normalize(guess_input), options, threshold=0.85)
+            if suggestion:
+                confirm = input(f"Did you mean {suggestion}? (y/n): ").lower()
+                if confirm == "y":
+                    match_country = next((c for c in CAN_PROVINCES if normalize(c["name"]) == suggestion), None)
+                else:
+                    continue
+
+        if match_country:
+            if match_country["name"] not in guessed:
+                guessed.add(match_country["name"])
+                print(f"Correct! {match_country['name']} added.")
+            else:
+                print("You already guessed that.")
+        else:
+            print("Incorrect guess.")
+
+        if len(guessed) == total_countries:
+            print("Congratulations! You guessed all the Provinces!")
+
+    # Time taken
+    end_time = time.time()
+    duration = end_time - start_time
+
+    guessed_count = len(guessed)
+    print(f"\nYou guessed {guessed_count} out of {total_countries} Provinces.")
+    print(f"Time taken: {int(duration // 60)} minutes and {int(duration % 60)} seconds.")
+
+    # Rank system
+    percentage = guessed_count / total_countries
+    if percentage >= 0.9:
+        rank = "Legendary Globetrotting Master"
+    elif percentage >= 0.75:
+        rank = "World Explorer"
+    elif percentage >= 0.5:
+        rank = "Seasoned Traveler"
+    elif percentage >= 0.25:
+        rank = "Casual Wanderer"
+    else:
+        rank = "Beginner"
+
+    print(f"Your rank: {rank}")
+    stats["played"] += 1
+    stats["wins"] += 1
+
+#--------------Unrecognized Countries----------------
+
+def play_guess_unrecognized():
+    global stats
+    stats["played"] += 1
+
+    # Select a random unrecognized territory
+    territory = random.choice(UNRECOGNIZED_TERRITORIES)
+
+    # Generate the list of correct answers including name, aliases, and short name
+    answer_names = [territory["name"]] + territory.get("aliases", []) + [territory.get("short", "")]
+    answers = [normalize(ans) for ans in answer_names if ans]
+
+    hints = []
+
+    # Generate hints for unrecognized territory
+    hints += hint_bank(territory)
+    random.shuffle(hints)
+    hint_index = 0
+
+    print("Guess the name of this unrecognized or disputed territory:")
+
+    for attempt in range(1, 6):
+        guess_input = input(f"Attempt {attempt}/5: ")
+        guess = normalize(guess_input)
+
+        if guess in answers:
+            print("Correct!")
+            stats["wins"] += 1
+            return
+
+        # Suggestion with spellcheck
+        combined_options = [normalize(t["name"]) for t in UNRECOGNIZED_TERRITORIES]
+        suggestion = spellcheck(guess, combined_options, threshold=0.85)
+
+        if suggestion:
+            confirm = input(f"Did you mean {suggestion}? (y/n): ").lower()
+            if confirm == "y":
+                if suggestion in answers:
+                    print("Correct!")
+                    stats["wins"] += 1
+                    return
+                else:
+                    print("No, that's not correct.")
+
+        # Provide hints after 2 attempts
+        if attempt >= 2 and hints and hint_index < len(hints):
+            print("Hint:", hints[hint_index])
+            hint_index += 1
+
+    # If all attempts used, reveal answer
+    print(f"No more guesses. The answer was {territory['name']}.")
+
 # ----------------- Main loop -----------------
 if __name__ == "__main__":
     stats = {"played": 0, "wins": 0}
@@ -1185,15 +1449,18 @@ if __name__ == "__main__":
             print("11. Speedrun (30s)")
             print("12. Speedrun (60s)")
             print("13. Guess all the countries")
-            print("14. Go Back")
-            return input("Select an option (11-14): ")
+            print("14. Guess all the States")
+            print("15. Guess all of the Candain Provinces ")
+            print("16. Unreconized Countries")
+            print("17. Go Back")
+            return input("Select an option (11-16): ")
 
         while True:
             mode = main_menu()
             if mode == "10":
                 # Continue to additional modes
                 mode = main_menu_cont()
-            elif mode == "14":
+            elif mode == "17":
                 # Go back to main menu
                 continue
 
@@ -1235,6 +1502,19 @@ if __name__ == "__main__":
                 print("\nLoading...")
                 time.sleep(1)
                 guess_all_countries()
+            elif mode == "14":
+                print("\nLoading...")
+                time.sleep(1)
+                guess_all_states()
+            elif mode == "15":
+                print("\nLoading...")
+                time.sleep(1)
+                guess_all_canada()
+            elif mode == "16":
+                print("\nLoading...")
+                time.sleep(1)
+                play_guess_unrecognized()
+
 
             else:
                 print("Invalid option. Please choose again.")
