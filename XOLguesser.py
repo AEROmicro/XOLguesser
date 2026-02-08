@@ -53,10 +53,10 @@ import time
 #Verison 3.4: Added new menu
 #Verison 3.5: Finished guess the state based on the capital mode
 #Version 3.6: Fixed error where 60s speedrun would fail
-
+#Version 3.7: Added/completed/bug tested new guess every country game mode
 
 # ASCII Art
-art = ("|---------------------------------------------------------------------------------------------------------|\n|                                                                                                         |\n|    /$$   /$$  /$$$$$$  /$$                                         Desgined and Programmed by AEROxol   |\n|   | $$  / $$ /$$__  $$| $$                                                                              |\n|   |  $$/ $$/| $$  \ $$| $$        /$$$$$$  /$$   /$$  /$$$$$$   /$$$$$$$ /$$$$$$$  /$$$$$$   /$$$$$$    |\n|    \  $$$$/ | $$  | $$| $$       /$$__  $$| $$  | $$ /$$__  $$ /$$_____//$$_____/ /$$__  $$ /$$__  $$   |\n|     >$$  $$ | $$  | $$| $$      | $$  \ $$| $$  | $$| $$$$$$$$|  $$$$$$|  $$$$$$ | $$$$$$$$| $$  \__/   |\n|    /$$/\  $$| $$  | $$| $$      | $$  | $$| $$  | $$| $$_____/ \____  $$\____  $$| $$_____/| $$         |\n|   | $$  \ $$|  $$$$$$/| $$$$$$$$|  $$$$$$$|  $$$$$$/|  $$$$$$$ /$$$$$$$//$$$$$$$/|  $$$$$$$| $$         |\n|   |__/  |__/ \______/ |________/ \____  $$ \______/  \_______/|_______/|_______/  \_______/|__/         |\n|                                  /$$  \ $$                                                              |\n|                                 |  $$$$$$/                                                              |\n|                                  \______/                                                 Version 3.6   |\n|                                                                                                         |\n|---------------------------------------------------------------------------------------------------------|")
+art = ("|---------------------------------------------------------------------------------------------------------|\n|                                                                                                         |\n|    /$$   /$$  /$$$$$$  /$$                                         Desgined and Programmed by AEROxol   |\n|   | $$  / $$ /$$__  $$| $$                                                                              |\n|   |  $$/ $$/| $$  \ $$| $$        /$$$$$$  /$$   /$$  /$$$$$$   /$$$$$$$ /$$$$$$$  /$$$$$$   /$$$$$$    |\n|    \  $$$$/ | $$  | $$| $$       /$$__  $$| $$  | $$ /$$__  $$ /$$_____//$$_____/ /$$__  $$ /$$__  $$   |\n|     >$$  $$ | $$  | $$| $$      | $$  \ $$| $$  | $$| $$$$$$$$|  $$$$$$|  $$$$$$ | $$$$$$$$| $$  \__/   |\n|    /$$/\  $$| $$  | $$| $$      | $$  | $$| $$  | $$| $$_____/ \____  $$\____  $$| $$_____/| $$         |\n|   | $$  \ $$|  $$$$$$/| $$$$$$$$|  $$$$$$$|  $$$$$$/|  $$$$$$$ /$$$$$$$//$$$$$$$/|  $$$$$$$| $$         |\n|   |__/  |__/ \______/ |________/ \____  $$ \______/  \_______/|_______/|_______/  \_______/|__/         |\n|                                  /$$  \ $$                                                              |\n|                                 |  $$$$$$/                                                              |\n|                                  \______/                                                 Version 3.7   |\n|                                                                                                         |\n|---------------------------------------------------------------------------------------------------------|")
 
 
 print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
@@ -929,9 +929,10 @@ def play_guess_statecapitalreverse():
         print("No more guesses.")
 
 #-----------------speedrun----------------
-def play_timedcountry_namingthrity(duration_seconds=30):
+def play_timedcountry_naming_thirty(duration_seconds=30):
     global stats
     stats["played"] += 1
+    stats["wins"] += 1
     print(f"\nYou have {duration_seconds} seconds to name as many countries as possible!\n")
     time.sleep(1)
     print("3...")
@@ -966,8 +967,27 @@ def play_timedcountry_namingthrity(duration_seconds=30):
                     print(f"You already guessed {country['name']}.")
                 found = True
                 break
+
+        # If not found, attempt spellcheck suggestion
         if not found:
-            print("Incorrect or already guessed.")
+            options = [normalize(c["name"]) for c in COUNTRIES]
+            suggestion = spellcheck(guess, options, threshold=0.85)
+            if suggestion:
+                confirm = input(f"Did you mean {suggestion}? (y/n): ").lower()
+                if confirm == "y":
+                    # Check if suggestion is correct
+                    match_country = next((c for c in COUNTRIES if normalize(c["name"]) == suggestion), None)
+                    if match_country:
+                        if match_country["name"] not in guessed_countries:
+                            guessed_countries.add(match_country["name"])
+                            print(f"Correct! {match_country['name']} added.")
+                        else:
+                            print(f"You already guessed {match_country['name']}.")
+                        found = True
+            else:
+                print("Incorrect or no suggestion.")
+
+        # Optional: add a slight pause or hint system here if desired
 
     print(f"\nTime's up! You named {len(guessed_countries)} countries.")
     print(f"Total countries in database: {total_countries}")
@@ -975,9 +995,10 @@ def play_timedcountry_namingthrity(duration_seconds=30):
     for c in guessed_countries:
         print(c)
 
-def play_timedcountry_namingsixty(duration_seconds=60):
+def play_timedcountry_naming_sixty(duration_seconds=60):
     global stats
     stats["played"] += 1
+    stats["wins"] += 1
     print(f"\nYou have {duration_seconds} seconds to name as many countries as possible!\n")
     time.sleep(1)
     print("3...")
@@ -1012,14 +1033,128 @@ def play_timedcountry_namingsixty(duration_seconds=60):
                     print(f"You already guessed {country['name']}.")
                 found = True
                 break
+
+        # If not found, attempt spellcheck suggestion
         if not found:
-            print("Incorrect or already guessed.")
+            options = [normalize(c["name"]) for c in COUNTRIES]
+            suggestion = spellcheck(guess, options, threshold=0.85)
+            if suggestion:
+                confirm = input(f"Did you mean {suggestion}? (y/n): ").lower()
+                if confirm == "y":
+                    # Check if suggestion is correct
+                    match_country = next((c for c in COUNTRIES if normalize(c["name"]) == suggestion), None)
+                    if match_country:
+                        if match_country["name"] not in guessed_countries:
+                            guessed_countries.add(match_country["name"])
+                            print(f"Correct! {match_country['name']} added.")
+                        else:
+                            print(f"You already guessed {match_country['name']}.")
+                        found = True
+            else:
+                print("Incorrect or no suggestion.")
+
+        # Optional: add a slight pause or hint system here if desired
 
     print(f"\nTime's up! You named {len(guessed_countries)} countries.")
     print(f"Total countries in database: {total_countries}")
     print("Your guessed countries:")
     for c in guessed_countries:
         print(c)
+#----------------Guess all countries---------
+def find_country_by_guess(guess):
+    guess_norm = normalize(guess)
+    for country in COUNTRIES:
+        # List all names and aliases for matching
+        names_to_check = [
+            normalize(country["name"]),
+            normalize(country["short"]),
+        ] + [normalize(alias) for alias in country.get("aliases", [])]
+        if guess_norm in names_to_check:
+            return country
+    return None
+
+def show_guessed_list(guessed):
+    if not guessed:
+        print("You haven't guessed any countries yet.")
+        return
+    print("\nYour guessed countries:")
+    for country in guessed:
+        print(country)
+        print("\n")
+
+def guess_all_countries():
+    total_countries = len(COUNTRIES)
+    guessed = set()
+    start_time = time.time()
+
+    print("Guess all the countries in the world!")
+    print("Type 'quit' to give up at any time.")
+    print("Type 'list' to see your guessed countries.")
+    print("Let's go!")
+
+    while len(guessed) < total_countries:
+        remaining = total_countries - len(guessed)
+        guess_input = input(f"Guess a country ({remaining} left) or 'list' or 'quit': ").strip()
+
+        # Handle commands
+        if guess_input.lower() == "quit":
+            confirm = input("Are you sure you want to give up? (y/n): ").lower()
+            if confirm == "y":
+                break
+            else:
+                continue
+        if guess_input.lower() == "list":
+            show_guessed_list(guessed)
+            continue
+
+        # Check for guess
+        match_country = find_country_by_guess(guess_input)
+
+        # If no direct match, suggest with spellcheck
+        if not match_country:
+            options = [normalize(c["name"]) for c in COUNTRIES]
+            suggestion = spellcheck(normalize(guess_input), options, threshold=0.85)
+            if suggestion:
+                confirm = input(f"Did you mean {suggestion}? (y/n): ").lower()
+                if confirm == "y":
+                    match_country = next((c for c in COUNTRIES if normalize(c["name"]) == suggestion), None)
+                else:
+                    continue
+
+        if match_country:
+            if match_country["name"] not in guessed:
+                guessed.add(match_country["name"])
+                print(f"Correct! {match_country['name']} added.")
+            else:
+                print("You already guessed that.")
+        else:
+            print("Incorrect guess.")
+
+        if len(guessed) == total_countries:
+            print("Congratulations! You guessed all countries!")
+
+    # Time taken
+    end_time = time.time()
+    duration = end_time - start_time
+
+    guessed_count = len(guessed)
+    print(f"\nYou guessed {guessed_count} out of {total_countries} countries.")
+    print(f"Time taken: {int(duration // 60)} minutes and {int(duration % 60)} seconds.")
+
+    # Rank system
+    percentage = guessed_count / total_countries
+    if percentage >= 0.9:
+        rank = "Legendary Globetrotting Master"
+    elif percentage >= 0.75:
+        rank = "World Explorer"
+    elif percentage >= 0.5:
+        rank = "Seasoned Traveler"
+    elif percentage >= 0.25:
+        rank = "Casual Wanderer"
+    else:
+        rank = "Beginner"
+
+    print(f"Your rank: {rank}")
 
 # ----------------- Main loop -----------------
 if __name__ == "__main__":
@@ -1043,15 +1178,16 @@ if __name__ == "__main__":
             print("\n--- Main Menu (Continued) ---")
             print("11. Speedrun (30s)")
             print("12. Speedrun (60s)")
-            print("13. Go Back")
-            return input("Select an option (11-13): ")
+            print("13. Guess all the countries")
+            print("14. Go Back")
+            return input("Select an option (11-14): ")
 
         while True:
             mode = main_menu()
             if mode == "10":
                 # Continue to additional modes
                 mode = main_menu_cont()
-            elif mode == "13":
+            elif mode == "14":
                 # Go back to main menu
                 continue
 
@@ -1084,11 +1220,16 @@ if __name__ == "__main__":
             elif mode == "11":
                 print("\nLoading...")
                 time.sleep(1)
-                play_timedcountry_namingthrity()
+                play_timedcountry_naming_thirty()
             elif mode == "12":
                 print("\nLoading...")
                 time.sleep(1)
-                play_timedcountry_namingsixty()
+                play_timedcountry_naming_sixty
+            elif mode == "13":
+                print("\nLoading...")
+                time.sleep(1)
+                guess_all_countries()
+
             else:
                 print("Invalid option. Please choose again.")
                 continue
@@ -1097,9 +1238,6 @@ if __name__ == "__main__":
             print(f"\nStats: Played: {stats['played']}, Wins: {stats['wins']}")
             again = input("Play again? (y/n): ").lower()
             if again != "y":
-                print("\nThanks for playing!")
-                print("Licensed under GNU GPLv3.")
-                print("Copyright (C) 2026 AEROforge")
                 break
         # End of the inner while loop, restart main menu or exit
         break
