@@ -7,7 +7,12 @@ import time
 # Developed by AEROforge
 # Supervised and Founded by AEROxol
 # Programming and Debugging by AEROxol
+
+# Offical Github Repository
 # https://github.com/AEROmicro/XOLguesser
+
+# Offical Website
+# https://sites.google.com/view/xolguesser/
 
 # Licensed under GNU General Public License v3.0 (GPLv3)
 # Anyone redistributing or modifying this code must retain this notice.
@@ -54,10 +59,11 @@ import time
 #Verison 3.5: Finished guess the state based on the capital mode
 #Version 3.6: Fixed error where 60s speedrun would fail
 #Version 3.7: Added/completed/bug tested new guess every country game mode
+#Version 3.8: Fixed bug where 60s speedrun game mode would not play
 
 # ASCII Art
-art = ("|---------------------------------------------------------------------------------------------------------|\n|                                                                                                         |\n|    /$$   /$$  /$$$$$$  /$$                                         Desgined and Programmed by AEROxol   |\n|   | $$  / $$ /$$__  $$| $$                                                                              |\n|   |  $$/ $$/| $$  \ $$| $$        /$$$$$$  /$$   /$$  /$$$$$$   /$$$$$$$ /$$$$$$$  /$$$$$$   /$$$$$$    |\n|    \  $$$$/ | $$  | $$| $$       /$$__  $$| $$  | $$ /$$__  $$ /$$_____//$$_____/ /$$__  $$ /$$__  $$   |\n|     >$$  $$ | $$  | $$| $$      | $$  \ $$| $$  | $$| $$$$$$$$|  $$$$$$|  $$$$$$ | $$$$$$$$| $$  \__/   |\n|    /$$/\  $$| $$  | $$| $$      | $$  | $$| $$  | $$| $$_____/ \____  $$\____  $$| $$_____/| $$         |\n|   | $$  \ $$|  $$$$$$/| $$$$$$$$|  $$$$$$$|  $$$$$$/|  $$$$$$$ /$$$$$$$//$$$$$$$/|  $$$$$$$| $$         |\n|   |__/  |__/ \______/ |________/ \____  $$ \______/  \_______/|_______/|_______/  \_______/|__/         |\n|                                  /$$  \ $$                                                              |\n|                                 |  $$$$$$/                                                              |\n|                                  \______/                                                 Version 3.7   |\n|                                                                                                         |\n|---------------------------------------------------------------------------------------------------------|")
 
+art = ("|---------------------------------------------------------------------------------------------------------|\n|                                                                                                         |\n|    /$$   /$$  /$$$$$$  /$$                                         Desgined and Programmed by AEROxol   |\n|   | $$  / $$ /$$__  $$| $$                                                                              |\n|   |  $$/ $$/| $$  \ $$| $$        /$$$$$$  /$$   /$$  /$$$$$$   /$$$$$$$ /$$$$$$$  /$$$$$$   /$$$$$$    |\n|    \  $$$$/ | $$  | $$| $$       /$$__  $$| $$  | $$ /$$__  $$ /$$_____//$$_____/ /$$__  $$ /$$__  $$   |\n|     >$$  $$ | $$  | $$| $$      | $$  \ $$| $$  | $$| $$$$$$$$|  $$$$$$|  $$$$$$ | $$$$$$$$| $$  \__/   |\n|    /$$/\  $$| $$  | $$| $$      | $$  | $$| $$  | $$| $$_____/ \____  $$\____  $$| $$_____/| $$         |\n|   | $$  \ $$|  $$$$$$/| $$$$$$$$|  $$$$$$$|  $$$$$$/|  $$$$$$$ /$$$$$$$//$$$$$$$/|  $$$$$$$| $$         |\n|   |__/  |__/ \______/ |________/ \____  $$ \______/  \_______/|_______/|_______/  \_______/|__/         |\n|                                  /$$  \ $$                                                              |\n|                                 |  $$$$$$/                                                              |\n|                                  \______/                                                 Version 3.8   |\n|                                                                                                         |\n|---------------------------------------------------------------------------------------------------------|")
 
 print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 print("Starting XOLguesser...\n")
@@ -457,7 +463,7 @@ TERRITORIES = [
     {"name": "Saint Pierre and Miquelon", "short": "PM", "country": "France", "continent": "North America", "region": "North America", "population": 0.6, "aliases": ["Saint Pierre Miquelon"], "territory": True},
     {"name": "French Guiana", "short": "GF", "country": "France", "continent": "South America", "region": "South America", "population": 0.3, "aliases": ["French Guiana"], "territory": True},
 
-    # Finish territories
+    # Finnish territories
     {"name": "Åland Islands", "short": "AX", "country": "Finland", "continent": "Europe", "region": "Northern Europe", "population": 0.03, "aliases": ["Åland", "Aland", "Aland Islands"], "territory": True},
 
     # British territories
@@ -469,7 +475,7 @@ TERRITORIES = [
 
     # Danish territories
     {"name": "Faroe Islands", "short": "FO", "country": "Denmark", "continent": "Europe", "region": "Northern Europe", "population": 0.052, "aliases": ["Faroe Islands"], "territory": True},
-    {"name": "Greenland", "short": "GL", "country": "Denmark", "continent": "North America", "region": "North America", "population": 0.56, "aliases": ["Greenland"], "territory": True},
+    {"name": "Greenland", "short": "GL", "country": "Denmark", "continent": "North America", "region": "North America", "population": 0.056, "aliases": ["Greenland"], "territory": True},
 
 ]
 # ----------------- Utility functions -----------------
@@ -1224,7 +1230,7 @@ if __name__ == "__main__":
             elif mode == "12":
                 print("\nLoading...")
                 time.sleep(1)
-                play_timedcountry_naming_sixty
+                play_timedcountry_naming_sixty()
             elif mode == "13":
                 print("\nLoading...")
                 time.sleep(1)
