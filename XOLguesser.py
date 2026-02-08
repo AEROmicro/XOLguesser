@@ -63,10 +63,12 @@ import time
 #Version 3.9: Pre-Release: Laid framework for 2 new game modes; bug fixes
 #Version 4.0: 2 new gamemodes
 #Version 4.1: Fixed minor menu error
+#Version 4.2: Added unreconized countries gamemode; will add more in later updates; edited hints to read better; made each game mode reveal what the answer is
+
 
 # ASCII Art
 
-art = ("+---------------------------------------------------------------------------------------------------------+\n|                                                                                                         |\n|    /$$   /$$  /$$$$$$  /$$                                         Desgined and Programmed by AEROxol   |\n|   | $$  / $$ /$$__  $$| $$                                                                              |\n|   |  $$/ $$/| $$  \ $$| $$        /$$$$$$  /$$   /$$  /$$$$$$   /$$$$$$$ /$$$$$$$  /$$$$$$   /$$$$$$    |\n|    \  $$$$/ | $$  | $$| $$       /$$__  $$| $$  | $$ /$$__  $$ /$$_____//$$_____/ /$$__  $$ /$$__  $$   |\n|     >$$  $$ | $$  | $$| $$      | $$  \ $$| $$  | $$| $$$$$$$$|  $$$$$$|  $$$$$$ | $$$$$$$$| $$  \__/   |\n|    /$$/\  $$| $$  | $$| $$      | $$  | $$| $$  | $$| $$_____/ \____  $$\____  $$| $$_____/| $$         |\n|   | $$  \ $$|  $$$$$$/| $$$$$$$$|  $$$$$$$|  $$$$$$/|  $$$$$$$ /$$$$$$$//$$$$$$$/|  $$$$$$$| $$         |\n|   |__/  |__/ \______/ |________/ \____  $$ \______/  \_______/|_______/|_______/  \_______/|__/         |\n|                                  /$$  \ $$                                                              |\n|                                 |  $$$$$$/                                                              |\n|                                  \______/                                                 Version 4.1   |\n|                                                                                                         |\n+---------------------------------------------------------------------------------------------------------+")
+art = ("+---------------------------------------------------------------------------------------------------------+\n|                                                                                                         |\n|    /$$   /$$  /$$$$$$  /$$                                         Desgined and Programmed by AEROxol   |\n|   | $$  / $$ /$$__  $$| $$                                                                              |\n|   |  $$/ $$/| $$  \ $$| $$        /$$$$$$  /$$   /$$  /$$$$$$   /$$$$$$$ /$$$$$$$  /$$$$$$   /$$$$$$    |\n|    \  $$$$/ | $$  | $$| $$       /$$__  $$| $$  | $$ /$$__  $$ /$$_____//$$_____/ /$$__  $$ /$$__  $$   |\n|     >$$  $$ | $$  | $$| $$      | $$  \ $$| $$  | $$| $$$$$$$$|  $$$$$$|  $$$$$$ | $$$$$$$$| $$  \__/   |\n|    /$$/\  $$| $$  | $$| $$      | $$  | $$| $$  | $$| $$_____/ \____  $$\____  $$| $$_____/| $$         |\n|   | $$  \ $$|  $$$$$$/| $$$$$$$$|  $$$$$$$|  $$$$$$/|  $$$$$$$ /$$$$$$$//$$$$$$$/|  $$$$$$$| $$         |\n|   |__/  |__/ \______/ |________/ \____  $$ \______/  \_______/|_______/|_______/  \_______/|__/         |\n|                                  /$$  \ $$                                                              |\n|                                 |  $$$$$$/                                                              |\n|                                  \______/                                                 Version 4.2   |\n|                                                                                                         |\n+---------------------------------------------------------------------------------------------------------+")
 
 print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 print("Starting XOLguesser...\n")
@@ -642,12 +644,13 @@ def hint_bank(entity):
             hints.append(f"Its name has {len(entity['capital'])} letters.")
         elif mode == ("6"):
             hints.append(f"This is the capital of {country_name}.")
-            hints.append(f"Located in {region} on {continent}.")
+            hints.append(f"Located in {region} within the continent of {continent}.")
             hints.append(f"Its name has {len(entity['capital'])} letters.")
         elif mode == ("8"):
-            hints.append(f"Located in {region} on {continent}.")
-            hints.append(f"The country has a population of {entity['population']}.")
+            hints.append(f"Located in {region} within the continent of {continent}.")
+            hints.append(f"The country has a population of {entity['population']} million.")
             hints.append(f"Its name has {len(entity['capital'])} letters.")
+            hints.append(f"The name starts with '{entity['name'][0]}'.")
     # Unrecognized territory (New check)
     elif entity.get("unrecognized", False):
         region = entity.get("region", "Unknown")
@@ -794,6 +797,8 @@ def play_guess_capital():
         length = len(answer_obj["name"])
         continent = answer_obj.get("continent", "unknown")
         print("No more guesses.")
+        print(f"The capital was {country['capital']}:")
+
 
 #-----------------reverse capitals--------------
 
@@ -847,6 +852,7 @@ def play_guess_capitalreverse():
         length = len(answer_obj["name"])
         continent = answer_obj.get("continent", "unknown")
         print("No more guesses.")
+        print(f"The country was {country['name']}:")
 
 
 #-------------State Capitals--------------------
@@ -900,6 +906,7 @@ def play_guess_statecapital():
         length = len(answer_obj["name"])
         continent = answer_obj.get("continent", "unknown")
         print("No more guesses.")
+        print(f"The capital was {country['capital']}:")
 
 #---------------------State Capitals reverse--------------
 
@@ -952,6 +959,7 @@ def play_guess_statecapitalreverse():
         length = len(answer_obj["name"])
         continent = answer_obj.get("continent", "unknown")
         print("No more guesses.")
+        print(f"The state was {country['name']}:")
 
 #-----------------speedrun----------------
 def play_timedcountry_naming_thirty(duration_seconds=30):
