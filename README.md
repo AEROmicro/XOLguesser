@@ -208,8 +208,4 @@ All contributions must comply with GPLv3.
 
 ## Disclaimer
 This software is provided “as is”, without warranty of any kind.
-
-See the GNU GPLv3 license for full terms.
-
-This software is provided “as is”, without warranty of any kind.
 See the GNU GPLv3 license for full terms.
