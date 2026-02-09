@@ -45,7 +45,7 @@ Designed for performance, portability, and long-term extensibility.
 
 ---
 
-## 🛠 Requirements
+## Requirements
 
 - Python 3.8 or higher
 - No additional libraries required
