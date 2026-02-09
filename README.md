@@ -183,11 +183,11 @@ See the `LICENSE` file for full legal details.
 
 ## Author
 
-Developed by **AEROforge**  
+Developed by **ÆROforge**  
 Supervised and Founded by **AEROxol**  
 Programming and Debugging by **AEROxol**
 
-Copyright (C) 2026 AEROforge
+Copyright (C) 2026 ÆROforge
 
 ---
 
