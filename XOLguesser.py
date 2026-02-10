@@ -4,6 +4,10 @@ import time
 import sys
 import itertools
 
+gp = 0  # games played counter
+win = 0
+lose = 0
+
 # XOLguesser
 
 # Developed by AEROforge
@@ -67,8 +71,10 @@ import itertools
 # Version 4.1: Fixed minor menu error
 # Version 4.2: Added unreconized countries gamemode; will add more in later updates; edited hints to read better; made each game mode reveal what the answer is
 # Version 4.3: Added new exit feature in both menu page; reorganized code to make it easier to edit; fixed long standing ASCII art error; added new loading screens and new ASCII art banner
+# Version 4.4: Added new achivment/memory system; improved loading system; changed variable names and removed stats list in favor of induvivdual variables GP, win, and lose
 
 # ASCII
+
 
 spinner = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
 
@@ -89,9 +95,9 @@ def exit():
     )
     print(logo)
     print("Thanks for playing!")
+    print(f"Your code: {gp}, {win}, {lose}")
     print("Licensed under GNU GPLv3.")
     print("Copyright (C) 2026 ÆROforge")
-
 
 logo = r"""
 
@@ -125,7 +131,7 @@ art = r"""
 |   |__/  |__/ \______/ |________/ \____  $$ \______/  \_______/|_______/|_______/  \_______/|__/         |
 |                                  /$$  \ $$                                                              |
 |                                 |  $$$$$$/                                                              |
-|                                  \______/                                                 Version 4.3   |
+|                                  \______/                                                 Version 4.4   |
 |                                                                                                         |
 '---------------------------------------------------------------------------------------------------------'
 """
@@ -168,17 +174,17 @@ for task in tasks:
 
 print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 print(logo)
-print("Starting XOLguesser...\n")
+time.sleep(1)
+gp = int(input("Enter the first group of numbers in your code (or enter '0' if you have no code): "))
+win = int(input("Enter the second group of numbers in your code (or enter '0' if you have no code): "))
+lose = int(input("Enter the third group of numbers in your code (or enter '0' if you have no code): "))
+time.sleep(1)
+print("\nStarting XOLguesser...\n")
 spinnerwheel()
 print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 print(art)
 
 time.sleep(1)
-
-# -------------------------
-# STATS
-# -------------------------
-stats = {"played": 0, "wins": 0, "losses": 0}
 
 # -------------------------
 # Countries, Territories, Dependencies, States, Provinces
@@ -3963,8 +3969,10 @@ def hint_bank(entity):
 
 
 def play_full_game():
-    global stats
-    stats["played"] += 1
+    global gp
+    global win
+    global lose
+    gp += 1
 
     pool = get_pool_by_option(mode)
     country = random.choice(pool)
@@ -3993,7 +4001,7 @@ def play_full_game():
 
         if guess in answers:
             print("Correct!")
-            stats["wins"] += 1
+            win += 1
             return
 
         combined_options = ALL_COUNTRY_NAMES + [
@@ -4006,7 +4014,7 @@ def play_full_game():
             if confirm == "y":
                 if normalize(suggestion) in answers:
                     print("Correct!")
-                    stats["wins"] += 1
+                    win += 1
                     return
                 else:
                     print("No, that's not correct.")
@@ -4040,13 +4048,17 @@ def play_full_game():
         length = len(answer_obj["name"])
         continent = answer_obj.get("continent", "unknown")
         print(f"No more guesses. The answer was {answer_obj['name']}")
+        lose += 1
+
 
 
 # Also the reverse of the guess capital capital -> country and country -> capital
 def play_guess_capital():
 
-    global stats
-    stats["played"] += 1
+    global gp
+    global win
+    global lose
+    gp += 1
     country = random.choice(COUNTRIES)
     answers = [normalize(country["capital"])]
     answer_continent = country.get("continent", "Unknown")
@@ -4064,7 +4076,7 @@ def play_guess_capital():
 
         if guess in answers:
             print("Correct!")
-            stats["wins"] += 1
+            win += 1
             return
 
         print(provide_continent_hint(guess, answer_continent))
@@ -4074,7 +4086,7 @@ def play_guess_capital():
             if confirm == "y":
                 if normalize(suggestion) in answers:
                     print("Correct!")
-                    stats["wins"] += 1
+                    win += 1
                     return
                 else:
                     print("No, that's not correct.")
@@ -4093,15 +4105,17 @@ def play_guess_capital():
         continent = answer_obj.get("continent", "unknown")
         print("No more guesses.")
         print(f"The capital was {country['capital']}:")
-
+        lose += 1
 
 # -----------------reverse capitals--------------
 
 
 def play_guess_capitalreverse():
 
-    global stats
-    stats["played"] += 1
+    global gp
+    global win
+    global lose
+    gp += 1
     country = random.choice(COUNTRIES)
     answers = [normalize(country["name"])]
     answer_continent = country.get("continent", "Unknown")
@@ -4119,7 +4133,7 @@ def play_guess_capitalreverse():
 
         if guess in answers:
             print("Correct!")
-            stats["wins"] += 1
+            win += 1
             return
 
         print(provide_continent_hint(guess, answer_continent))
@@ -4129,7 +4143,7 @@ def play_guess_capitalreverse():
             if confirm == "y":
                 if normalize(suggestion) in answers:
                     print("Correct!")
-                    stats["wins"] += 1
+                    win += 1
                     return
                 else:
                     print("No, that's not correct.")
@@ -4148,6 +4162,7 @@ def play_guess_capitalreverse():
         continent = answer_obj.get("continent", "unknown")
         print("No more guesses.")
         print(f"The country was {country['name']}:")
+        lose += 1
 
 
 # -------------State Capitals--------------------
@@ -4155,8 +4170,10 @@ def play_guess_capitalreverse():
 
 def play_guess_statecapital():
 
-    global stats
-    stats["played"] += 1
+    global gp
+    global win
+    global lose
+    gp += 1
     country = random.choice(US_STATESCAP)
     answers = [normalize(country["capital"])]
     answer_continent = country.get("continent", "Unknown")
@@ -4184,7 +4201,7 @@ def play_guess_statecapital():
             if confirm == "y":
                 if normalize(suggestion) in answers:
                     print("Correct!")
-                    stats["wins"] += 1
+                    win += 1
                     return
                 else:
                     print("No, that's not correct.")
@@ -4205,15 +4222,17 @@ def play_guess_statecapital():
         continent = answer_obj.get("continent", "unknown")
         print("No more guesses.")
         print(f"The capital was {country['capital']}:")
-
+        gp += 1
 
 # ---------------------State Capitals reverse--------------
 
 
 def play_guess_statecapitalreverse():
 
-    global stats
-    stats["played"] += 1
+    global gp
+    global win
+    global lose
+    gp += 1
     country = random.choice(US_STATESCAP)
     answers = [normalize(country["name"])]
     answer_continent = country.get("continent", "Unknown")
@@ -4231,7 +4250,7 @@ def play_guess_statecapitalreverse():
 
         if guess in answers:
             print("Correct!")
-            stats["wins"] += 1
+            win += 1
             return
 
         print(provide_continent_hint(guess, answer_continent))
@@ -4241,7 +4260,7 @@ def play_guess_statecapitalreverse():
             if confirm == "y":
                 if normalize(suggestion) in answers:
                     print("Correct!")
-                    stats["wins"] += 1
+                    win += 1
                     return
                 else:
                     print("No, that's not correct.")
@@ -4262,13 +4281,16 @@ def play_guess_statecapitalreverse():
         continent = answer_obj.get("continent", "unknown")
         print("No more guesses.")
         print(f"The state was {country['name']}:")
+        lose += 1
 
 
 # -----------------speedrun----------------
 def play_timedcountry_naming_thirty(duration_seconds=30):
-    global stats
-    stats["played"] += 1
-    stats["wins"] += 1
+    global gp
+    global win
+    global lose
+    win += 1
+    gp += 1
     print(
         f"\nYou have {duration_seconds} seconds to name as many countries as possible!\n"
     )
@@ -4342,9 +4364,11 @@ def play_timedcountry_naming_thirty(duration_seconds=30):
 
 
 def play_timedcountry_naming_sixty(duration_seconds=60):
-    global stats
-    stats["played"] += 1
-    stats["wins"] += 1
+    global gp
+    global win
+    global lose
+    win += 1
+    gp += 1
     print(
         f"\nYou have {duration_seconds} seconds to name as many countries as possible!\n"
     )
@@ -4442,8 +4466,11 @@ def show_guessed_list(guessed):
 
 
 def guess_all_countries():
-    stats["played"] += 1
-    stats["wins"] += 1
+    global gp
+    global win
+    global lose
+    win += 1
+    gp += 1
     total_countries = len(COUNTRIES)
     guessed = set()
     start_time = time.time()
@@ -4548,6 +4575,9 @@ def show_guessed_liststates(guessed):
 
 
 def guess_all_states():
+    global gp
+    global win
+    global lose
     total_countries = len(US_STATES)
     guessed = set()
     start_time = time.time()
@@ -4627,8 +4657,8 @@ def guess_all_states():
         rank = "Beginner"
 
     print(f"Your rank: {rank}")
-    stats["played"] += 1
-    stats["wins"] += 1
+    win += 1
+    gp += 1
 
 
 # ----------Guess all providences------------------
@@ -4654,6 +4684,9 @@ def show_guessed_listcanada(guessed):
 
 
 def guess_all_canada():
+    global gp
+    global win
+    global lose
     total_countries = len(CAN_PROVINCES)
     guessed = set()
     start_time = time.time()
@@ -4737,16 +4770,18 @@ def guess_all_canada():
         rank = "Beginner"
 
     print(f"Your rank: {rank}")
-    stats["played"] += 1
-    stats["wins"] += 1
+    win += 1
+    gp += 1
 
 
 # --------------Unrecognized Countries----------------
 
 
 def play_guess_unrecognized():
-    global stats
-    stats["played"] += 1
+    global gp
+    global win
+    global lose
+    gp += 1
 
     # Select a random unrecognized territory
     territory = random.choice(UNRECOGNIZED_TERRITORIES)
@@ -4774,7 +4809,7 @@ def play_guess_unrecognized():
 
         if guess in answers:
             print("Correct!")
-            stats["wins"] += 1
+            win += 1
             return
 
         # Suggestion with spellcheck
@@ -4786,7 +4821,7 @@ def play_guess_unrecognized():
             if confirm == "y":
                 if suggestion in answers:
                     print("Correct!")
-                    stats["wins"] += 1
+                    win += 1
                     return
                 else:
                     print("No, that's not correct.")
@@ -4798,6 +4833,7 @@ def play_guess_unrecognized():
 
     # If all attempts used, reveal answer
     print(f"No more guesses. The answer was {territory['name']}.")
+    lose += 1
 
 def loading_ball():
     print("\n")
@@ -4910,7 +4946,7 @@ if __name__ == "__main__":
                 continue
 
             # Show stats after each game
-            print(f"\nStats: Played: {stats['played']}, Wins: {stats['wins']}")
+            print(f"\nStats: Played: {gp}, Wins: {win}, Losses: {lose}")
             again = input("Play again? (y/n): ").lower()
             if again != "y":
                 exit()
