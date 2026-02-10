@@ -72,6 +72,8 @@ lose = 0
 # Version 4.2: Added unreconized countries gamemode; will add more in later updates; edited hints to read better; made each game mode reveal what the answer is
 # Version 4.3: Added new exit feature in both menu page; reorganized code to make it easier to edit; fixed long standing ASCII art error; added new loading screens and new ASCII art banner
 # Version 4.4: Added new achivment/memory system; improved loading system; changed variable names and removed stats list in favor of induvivdual variables GP, win, and lose
+# Version 4.5: Reordered loading screens
+
 
 # ASCII
 
@@ -95,7 +97,7 @@ def exit():
     )
     print(logo)
     print("Thanks for playing!")
-    print(f"Your code: {gp}, {win}, {lose}")
+    print(f"Your code: {gp}-{win}-{lose}")
     print("Licensed under GNU GPLv3.")
     print("Copyright (C) 2026 ÆROforge")
 
@@ -121,7 +123,7 @@ logo = r"""
 art = r"""
 .---------------------------------------------------------------------------------------------------------.
 |                                                                                                         |
-|    /$$   /$$  /$$$$$$  /$$                                         Desgined and Programmed by AEROxol   |
+|    /$$   /$$  /$$$$$$  /$$                                          Desgined and Programmed by ÆROxol   |
 |   | $$  / $$ /$$__  $$| $$                                                                              |
 |   |  $$/ $$/| $$  \ $$| $$        /$$$$$$  /$$   /$$  /$$$$$$   /$$$$$$$ /$$$$$$$  /$$$$$$   /$$$$$$    |
 |    \  $$$$/ | $$  | $$| $$       /$$__  $$| $$  | $$ /$$__  $$ /$$_____//$$_____/ /$$__  $$ /$$__  $$   |
@@ -131,7 +133,7 @@ art = r"""
 |   |__/  |__/ \______/ |________/ \____  $$ \______/  \_______/|_______/|_______/  \_______/|__/         |
 |                                  /$$  \ $$                                                              |
 |                                 |  $$$$$$/                                                              |
-|                                  \______/                                                 Version 4.4   |
+|                                  \______/                                                 Version 4.5   |
 |                                                                                                         |
 '---------------------------------------------------------------------------------------------------------'
 """
@@ -171,13 +173,16 @@ for task in tasks:
     sys.stdout.flush()
     time.sleep(0.1)
 
-
+statsload = input("\nPress enter if you want to skip stats loading or enter 'y' if you want to: ")
+if statsload in ["y", "Y", "yes", "YES", "Yes"]:
+    gp = int(input("Enter the first group of numbers in your code (or enter '0' if you have no code): "))
+    win = int(input("Enter the second group of numbers in your code (or enter '0' if you have no code): "))
+    lose = int(input("Enter the third group of numbers in your code (or enter '0' if you have no code): "))
+    spinnerwheel()
+else:
+    time.sleep(1)
 print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 print(logo)
-time.sleep(1)
-gp = int(input("Enter the first group of numbers in your code (or enter '0' if you have no code): "))
-win = int(input("Enter the second group of numbers in your code (or enter '0' if you have no code): "))
-lose = int(input("Enter the third group of numbers in your code (or enter '0' if you have no code): "))
 time.sleep(1)
 print("\nStarting XOLguesser...\n")
 spinnerwheel()
