@@ -4,6 +4,14 @@ import time
 import sys
 import itertools
 
+def legal_info():
+    print("Licensed under GNU GPLv3.")
+    print("Developed by ÆROforge")
+    print("Programmed and maintained by ÆROxol")
+    print("Copyright (C) 2026 ÆROforge\n")
+
+legal_info()
+
 gp = 0  # games played counter
 win = 0
 lose = 0
@@ -73,6 +81,7 @@ lose = 0
 # Version 4.3: Added new exit feature in both menu page; reorganized code to make it easier to edit; fixed long standing ASCII art error; added new loading screens and new ASCII art banner
 # Version 4.4: Added new achivment/memory system; improved loading system; changed variable names and removed stats list in favor of induvivdual variables GP, win, and lose
 # Version 4.5: Reordered loading screens
+# Verison 4.6: Added new major US cities feature recogniton to make gameplay more intresting NOTE: these cities are not the capitals just there to make the game more difficult and intresting.
 
 
 # ASCII
@@ -133,7 +142,7 @@ art = r"""
 |   |__/  |__/ \______/ |________/ \____  $$ \______/  \_______/|_______/|_______/  \_______/|__/         |
 |                                  /$$  \ $$                                                              |
 |                                 |  $$$$$$/                                                              |
-|                                  \______/                                                 Version 4.5   |
+|                                  \______/                                                 Version 4.6   |
 |                                                                                                         |
 '---------------------------------------------------------------------------------------------------------'
 """
@@ -288,7 +297,7 @@ COUNTRIES = [
     },
     {
         "name": "Central African Republic",
-        "short": "Cemonitorntral African Republic",
+        "short": "Central African Republic",
         "continent": "Africa",
         "capital": "Bangui",
         "region": "Central Africa",
@@ -301,7 +310,7 @@ COUNTRIES = [
         "name": "Chad",
         "short": "Chad",
         "continent": "Africa",
-        "capital": "NDjamena",
+        "capital": "N'Djamena",
         "region": "Central Africa",
         "population": 17,
         "aliases": ["TD"],
@@ -2884,6 +2893,7 @@ US_STATESCAP = [
         "short": "AL",
         "yearfounded": "1846",
         "capital": "Montgomery",
+        "major_cites": ["Huntsville", "Birmingham", "Mobile"],
         "population": 0.2,
         "statecap": True,
         "un_member": False,
@@ -2893,6 +2903,7 @@ US_STATESCAP = [
         "short": "AK",
         "yearfounded": "1906",
         "capital": "Juneau",
+        "major_cites": ["Anchorage", "Fairbanks"],
         "population": 0.03,
         "statecap": True,
         "un_member": False,
@@ -2902,6 +2913,7 @@ US_STATESCAP = [
         "short": "AZ",
         "yearfounded": "1889",
         "capital": "Phoenix",
+        "major_cites": ["Tucson", "Mesa", "Chandler"],
         "population": 1.6,
         "statecap": True,
         "un_member": False,
@@ -2911,6 +2923,7 @@ US_STATESCAP = [
         "short": "AR",
         "yearfounded": "1821",
         "capital": "Little Rock",
+        "major_cites": ["Fayetteville", "Fort Smith", "Springdale"],
         "population": 0.2,
         "statecap": True,
         "un_member": False,
@@ -2920,6 +2933,7 @@ US_STATESCAP = [
         "short": "CA",
         "yearfounded": "1854",
         "capital": "Sacramento",
+        "major_cites": ["Los Angeles", "LA", "San Francisco", "San Diego"],
         "population": 0.5,
         "statecap": True,
         "un_member": False,
@@ -2929,6 +2943,7 @@ US_STATESCAP = [
         "short": "CO",
         "yearfounded": "1867",
         "capital": "Denver",
+        "major_cites": ["Aurora", "Colorado Springs", "Boulder", "Aspen"],
         "population": 0.7,
         "statecap": True,
         "un_member": False,
@@ -2938,6 +2953,7 @@ US_STATESCAP = [
         "short": "CT",
         "yearfounded": "1875",
         "capital": "Hartford",
+        "major_cites": ["New Haven", "Stamford", "Shelton", "Bridgeport"],
         "population": 0.2,
         "statecap": True,
         "un_member": False,
@@ -2947,6 +2963,7 @@ US_STATESCAP = [
         "short": "DE",
         "yearfounded": "1777",
         "capital": "Dover",
+        "major_cites": ["Wilmington", "New Castle", "Delaware City"],
         "population": 0.03,
         "statecap": True,
         "un_member": False,
@@ -2956,6 +2973,7 @@ US_STATESCAP = [
         "short": "FL",
         "yearfounded": "1824",
         "capital": "Tallahassee",
+        "major_cites": ["Orlando", "Tampa", "Miami"],
         "population": 0.2,
         "statecap": True,
         "un_member": False,
@@ -2965,6 +2983,7 @@ US_STATESCAP = [
         "short": "GA",
         "yearfounded": "1868",
         "capital": "Atlanta",
+        "major_cites": ["Savannah", "Alpharetta", "Macon"],
         "population": 0.5,
         "statecap": True,
         "un_member": False,
@@ -2974,6 +2993,7 @@ US_STATESCAP = [
         "short": "HI",
         "yearfounded": "1845",
         "capital": "Honolulu",
+        "major_cites": ["Kailua-Kona", "Hilo", "Volcano"],
         "population": 0.35,
         "statecap": True,
         "un_member": False,
@@ -2983,6 +3003,7 @@ US_STATESCAP = [
         "short": "ID",
         "yearfounded": "1865",
         "capital": "Boise",
+        "major_cites": ["Idaho Falls", "Nampa", "Twin Falls"],
         "population": 0.2,
         "statecap": True,
         "un_member": False,
@@ -2992,6 +3013,7 @@ US_STATESCAP = [
         "short": "IL",
         "yearfounded": "1837",
         "capital": "Springfield",
+        "major_cites": ["Peoria", "Chicago", "Illinois City"],
         "population": 0.1,
         "statecap": True,
         "un_member": False,
@@ -3001,6 +3023,7 @@ US_STATESCAP = [
         "short": "IN",
         "yearfounded": "1825",
         "capital": "Indianapolis",
+        "major_cites": ["Fort Wayne", "Bloomington", "Evansville"],
         "population": 0.9,
         "statecap": True,
         "un_member": False,
@@ -3010,6 +3033,7 @@ US_STATESCAP = [
         "short": "IA",
         "yearfounded": "1857",
         "capital": "Des Moines",
+        "major_cites": ["Iowa City", "Cedar Rapids", "Davenport"],
         "population": 0.2,
         "statecap": True,
         "un_member": False,
@@ -3019,6 +3043,7 @@ US_STATESCAP = [
         "short": "KS",
         "yearfounded": "1856",
         "capital": "Topeka",
+        "major_cites": ["Kansas City", "Wichita", "Overland Park"],
         "population": 0.1,
         "statecap": True,
         "un_member": False,
@@ -3028,6 +3053,7 @@ US_STATESCAP = [
         "short": "KY",
         "yearfounded": "1792",
         "capital": "Frankfort",
+        "major_cites": ["Louisville", "Lexington", "Paducah"],
         "population": 0.07,
         "statecap": True,
         "un_member": False,
@@ -3037,6 +3063,7 @@ US_STATESCAP = [
         "short": "LA",
         "yearfounded": "1880",
         "capital": "Baton Rouge",
+        "major_cites": ["New Orleans", "Shreveport", "Lafayette"],
         "population": 0.2,
         "statecap": True,
         "un_member": False,
@@ -3046,6 +3073,7 @@ US_STATESCAP = [
         "short": "ME",
         "yearfounded": "1832",
         "capital": "Augusta",
+        "major_cites": ["Portland", "Bangor", "Bar Harbor"],
         "population": 0.01,
         "statecap": True,
         "un_member": False,
@@ -3055,6 +3083,7 @@ US_STATESCAP = [
         "short": "MD",
         "yearfounded": "1694",
         "capital": "Annapolis",
+        "major_cites": ["Baltimore", "Frederick", "Ocean City"],
         "population": 0.04,
         "statecap": True,
         "un_member": False,
@@ -3064,6 +3093,7 @@ US_STATESCAP = [
         "short": "MA",
         "yearfounded": "1630",
         "capital": "Boston",
+        "major_cites": ["Plymouth", "Worcester", "Cambridge"],
         "population": 0.67,
         "statecap": True,
         "un_member": False,
@@ -3073,6 +3103,7 @@ US_STATESCAP = [
         "short": "MI",
         "yearfounded": "1847",
         "capital": "Lansing",
+        "major_cites": ["Detroit", "Grand Rapids", "Lansing"],
         "population": 0.1,
         "statecap": True,
         "un_member": False,
@@ -3082,6 +3113,7 @@ US_STATESCAP = [
         "short": "MN",
         "yearfounded": "1849",
         "capital": "Saint Paul",
+        "major_cites": ["Minneapolis", "Duluth", "Minnesota City", "Angle Inlet"],
         "population": 0.3,
         "statecap": True,
         "un_member": False,
@@ -3091,6 +3123,7 @@ US_STATESCAP = [
         "short": "MS",
         "yearfounded": "1864",
         "capital": "Jackson",
+        "major_cites": ["Mississippi State", "Tupelo", "Oxford"],
         "population": 0.15,
         "statecap": True,
         "un_member": False,
@@ -3100,6 +3133,7 @@ US_STATESCAP = [
         "short": "MO",
         "yearfounded": "1826",
         "capital": "Jefferson City",
+        "major_cites": ["Kansas City", "Saint Louis", "St. Louis", "Columbia"],
         "population": 0.4,
         "statecap": True,
         "un_member": False,
@@ -3109,6 +3143,7 @@ US_STATESCAP = [
         "short": "MT",
         "yearfounded": "1875",
         "capital": "Helena",
+        "major_cites": ["Missoula", "Billings", "Bozeman"],
         "population": 0.03,
         "statecap": True,
         "un_member": False,
@@ -3118,6 +3153,7 @@ US_STATESCAP = [
         "short": "NE",
         "yearfounded": "1867",
         "capital": "Lincoln",
+        "major_cites": ["Omaha", "Nebraska City", "Grand Island"],
         "population": 0.3,
         "statecap": True,
         "un_member": False,
@@ -3127,6 +3163,7 @@ US_STATESCAP = [
         "short": "NV",
         "yearfounded": "1861",
         "capital": "Carson City",
+        "major_cites": ["Las Vegas", "LV", "Reno", "Henderson"],
         "population": 0.05,
         "statecap": True,
         "un_member": False,
@@ -3136,6 +3173,7 @@ US_STATESCAP = [
         "short": "NH",
         "yearfounded": "1808",
         "capital": "Concord",
+        "major_cites": ["Manchester", "Nashua", "Portsmith"],
         "population": 0.04,
         "statecap": True,
         "un_member": False,
@@ -3145,6 +3183,7 @@ US_STATESCAP = [
         "short": "NJ",
         "yearfounded": "1784",
         "capital": "Trenton",
+        "major_cites": ["Jersey City", "Newark", "Atlantic City"],
         "population": 0.1,
         "statecap": True,
         "un_member": False,
@@ -3154,6 +3193,7 @@ US_STATESCAP = [
         "short": "NM",
         "yearfounded": "1610",
         "capital": "Santa Fe",
+        "major_cites": ["Albuquerque", "Las Cruces", "Roswell"],
         "population": 0.1,
         "statecap": True,
         "un_member": False,
@@ -3163,6 +3203,7 @@ US_STATESCAP = [
         "short": "NY",
         "yearfounded": "1797",
         "capital": "Albany",
+        "major_cites": ["New York City", "NYC", "Buffalo", "Rochester"],
         "population": 0.1,
         "statecap": True,
         "un_member": False,
@@ -3172,6 +3213,7 @@ US_STATESCAP = [
         "short": "NC",
         "yearfounded": "1792",
         "capital": "Raleigh",
+        "major_cites": ["Charlotte", "Asheville", "Wilmington"],
         "population": 1.4,
         "statecap": True,
         "un_member": False,
@@ -3181,6 +3223,7 @@ US_STATESCAP = [
         "short": "ND",
         "yearfounded": "1883",
         "capital": "Bismarck",
+        "major_cites": ["Fargo", "Minot", "Grand Forks"],
         "population": 0.07,
         "statecap": True,
         "un_member": False,
@@ -3190,6 +3233,7 @@ US_STATESCAP = [
         "short": "OH",
         "yearfounded": "1816",
         "capital": "Columbus",
+        "major_cites": ["Cleveland", "Cincinnati", "Akron"],
         "population": 0.1,
         "statecap": True,
         "un_member": False,
@@ -3199,6 +3243,7 @@ US_STATESCAP = [
         "short": "OK",
         "yearfounded": "1910",
         "capital": "Oklahoma City",
+        "major_cites": ["Tulsa", "Norman", "Edmond"],
         "population": 0.7,
         "statecap": True,
         "un_member": False,
@@ -3208,6 +3253,7 @@ US_STATESCAP = [
         "short": "OR",
         "yearfounded": "1855",
         "capital": "Salem",
+        "major_cites": ["Eugene", "Portland", "Bend"],
         "population": 0.2,
         "statecap": True,
         "un_member": False,
@@ -3217,6 +3263,7 @@ US_STATESCAP = [
         "short": "PA",
         "yearfounded": "1812",
         "capital": "Harrisburg",
+        "major_cites": ["Philadelphia", "Pittsburgh", "Lancaster"],
         "population": 0.05,
         "statecap": True,
         "un_member": False,
@@ -3226,6 +3273,7 @@ US_STATESCAP = [
         "short": "RI",
         "yearfounded": "1900",
         "capital": "Providence",
+        "major_cites": ["Newport", "Warwick", "Pawtucket"],
         "population": 0.2,
         "statecap": True,
         "un_member": False,
@@ -3235,6 +3283,7 @@ US_STATESCAP = [
         "short": "SC",
         "yearfounded": "1786",
         "capital": "Columbia",
+        "major_cites": ["Myrtle Beach", "Greenville", "Spartanburg"],
         "population": 0.1,
         "statecap": True,
         "un_member": False,
@@ -3244,6 +3293,7 @@ US_STATESCAP = [
         "short": "SD",
         "yearfounded": "1889",
         "capital": "Pierre",
+        "major_cites": ["Sioux Falls", "Rapid City", "Watertown"],
         "population": 0.01,
         "statecap": True,
         "un_member": False,
@@ -3253,6 +3303,7 @@ US_STATESCAP = [
         "short": "TN",
         "yearfounded": "1826",
         "capital": "Nashville",
+        "major_cites": ["Memphis", "Knoxville", "Chattanooga"],
         "population": 0.7,
         "statecap": True,
         "un_member": False,
@@ -3262,6 +3313,7 @@ US_STATESCAP = [
         "short": "TX",
         "yearfounded": "1801",
         "capital": "Austin",
+        "major_cites": ["Houston", "Dallas", "San Antonio"],
         "population": 1,
         "statecap": True,
         "un_member": False,
@@ -3271,6 +3323,7 @@ US_STATESCAP = [
         "short": "UT",
         "yearfounded": "1858",
         "capital": "Salt Lake City",
+        "major_cites": ["Saint Geroge", "St. Geroge", "Park City", "Provo"],
         "population": 0.2,
         "statecap": True,
         "un_member": False,
@@ -3280,6 +3333,7 @@ US_STATESCAP = [
         "short": "VT",
         "yearfounded": "1805",
         "capital": "Montpelier",
+        "major_cites": ["Burlington", "Stowe", "Rutland"],
         "population": 0.008,
         "statecap": True,
         "un_member": False,
@@ -3289,6 +3343,7 @@ US_STATESCAP = [
         "short": "VA",
         "yearfounded": "1780",
         "capital": "Richmond",
+        "major_cites": ["Virginia Beach", "Charlottesville", "Norfolk"],
         "population": 0.2,
         "statecap": True,
         "un_member": False,
@@ -3298,6 +3353,7 @@ US_STATESCAP = [
         "short": "WA",
         "yearfounded": "1853",
         "capital": "Olympia",
+        "major_cites": ["Seattle", "Tacoma", "Spokane"],
         "population": 0.05,
         "statecap": True,
         "un_member": False,
@@ -3307,6 +3363,7 @@ US_STATESCAP = [
         "short": "WV",
         "yearfounded": "1885",
         "capital": "Charleston",
+        "major_cites": ["Morgantown", "Martinsburg", "Beckley"],
         "population": 0.05,
         "statecap": True,
         "un_member": False,
@@ -3316,6 +3373,7 @@ US_STATESCAP = [
         "short": "WI",
         "yearfounded": "1838",
         "capital": "Madison",
+        "major_cites": ["Milwaukee", "Green Bay", "Wisconsin Dells"],
         "population": 0.27,
         "statecap": True,
         "un_member": False,
@@ -3325,6 +3383,7 @@ US_STATESCAP = [
         "short": "WY",
         "yearfounded": "1869",
         "capital": "Cheyenne",
+        "major_cites": ["Jackson", "Casper", "Wisconsin Dells"],
         "population": 0.06,
         "statecap": True,
         "un_member": False,
@@ -3787,6 +3846,8 @@ def init_all_options():
             ALL_COUNTRY_NAMES.append(normalize(a))
     # US states
     ALL_COUNTRY_NAMES += [normalize(s["name"]) for s in US_STATES]
+    for s in c.get("aliases", []):
+            ALL_COUNTRY_NAMES.append(normalize(a))
     # Canadian provinces
     for p in CAN_PROVINCES:
         ALL_COUNTRY_NAMES.append(normalize(p["name"]))
@@ -3803,8 +3864,14 @@ def init_all_options():
         ALL_COUNTRY_NAMES.append(normalize(c["capital"]))
     # State capitals
     for c in US_STATESCAP:
+        ALL_COUNTRY_NAMES += [normalize(s["name"]) for s in US_STATESCAP]
+        ALL_COUNTRY_NAMES += [normalize(s["capital"]) for s in US_STATESCAP]
+        ALL_COUNTRY_NAMES += [normalize(s["major_cites"]) for s in US_STATESCAP]
         ALL_COUNTRY_NAMES.append(normalize(c["name"]))
         ALL_COUNTRY_NAMES.append(normalize(c["capital"]))
+        ALL_COUNTRY_NAMES.append(normalize(c["major_cites"]))
+        for a in c.get("major_cites", []):
+            ALL_COUNTRY_NAMES.append(normalize(a))
 
 
 init_all_options()
@@ -3875,14 +3942,15 @@ def provide_continent_hint(guess_name, answer_continent):
     Give a hint comparing the guessed continent with the answer's continent.
     """
     guess_continent = get_continent_of_name(guess_name)
-    if guess_continent is None:
-        return "Your guess doesn't match anything in the database."
-    elif guess_continent == answer_continent:
+    if guess_continent == answer_continent:
         return "You're in the right continent!"
     else:
-        return (
-            f"Your guess is in {guess_continent}, but it is in a different continent."
-        )
+        if mode == "7":
+            randomstuff = (1)
+        else:
+            return (
+                f"Your guess is in {guess_continent}, but it is in a different continent."
+            )
 
 
 def hint_bank(entity):
@@ -3955,17 +4023,17 @@ def hint_bank(entity):
 
     # General info for countries
     else:
-        continent = entity.get("continent", "Unknown")
-        region = entity.get("region", "Unknown")
-        name_len = len(entity["name"])
-        population = entity.get("population", "unknown")
-        capital = entity.get("capital", "N/A")
         hints.append(f"It is in {continent}.")
         hints.append(f"Region: {region}.")
         hints.append(f"The capital city is {capital}.")
         hints.append(f"Population: {population} million.")
         hints.append(f"Name has {name_len} letters.")
         hints.append(f"Name starts with '{entity['name'][0]}'.")
+        continent = entity.get("continent", "Unknown")
+        region = entity.get("region", "Unknown")
+        name_len = len(entity["name"])
+        population = entity.get("population", "unknown")
+        capital = entity.get("capital", "N/A")
 
     return hints
 
@@ -4196,11 +4264,11 @@ def play_guess_statecapital():
 
         if guess in answers:
             print("Correct!")
-            stats["wins"] += 1
+            win += 1
             return
 
-        print(provide_continent_hint(guess, answer_continent))
-        suggestion = spellcheck(guess, ALL_COUNTRY_NAMES, threshold=0.85)
+        combined_options = ALL_COUNTRY_NAMES
+        suggestion = spellcheck(guess, combined_options, threshold=0.85)
         if suggestion:
             confirm = input(f"Did you mean {suggestion}? (y/n): ").lower()
             if confirm == "y":
@@ -4227,7 +4295,7 @@ def play_guess_statecapital():
         continent = answer_obj.get("continent", "unknown")
         print("No more guesses.")
         print(f"The capital was {country['capital']}:")
-        gp += 1
+        lose += 1
 
 # ---------------------State Capitals reverse--------------
 
@@ -4861,8 +4929,8 @@ if __name__ == "__main__":
     stats = {"played": 0, "wins": 0}
     while True:
 
+        spinnerwheel()
         def main_menu():
-            spinnerwheel()
             print("\n--- Main Menu ---")
             print("1. Countries/Territories")
             print("2. Countries")
@@ -4878,7 +4946,6 @@ if __name__ == "__main__":
             print("\n")
 
         def main_menu_cont():
-            spinnerwheel()
             print("\n--- Main Menu (Continued) ---")
             print("11. Speedrun (30s)")
             print("12. Speedrun (60s)")
@@ -4896,8 +4963,8 @@ if __name__ == "__main__":
                 # Continue to additional modes
                 mode = main_menu_cont()
             elif mode == "17":
-                # Go back to main menu
                 continue
+
 
             # Now handle the selected mode
             if mode in ["1", "2", "3", "4", "5"]:
@@ -4938,8 +5005,10 @@ if __name__ == "__main__":
             elif mode == "16":
                 loading_ball()
                 play_guess_unrecognized()
+
             elif mode in ["exit", "EXIT", "Exit", "quit", "QUIT", "Quit"]:
                 exitconfrim = input("Do you want to quit? (y/n): ")
+
                 if exitconfrim == "y":
                     exit()
                     break
